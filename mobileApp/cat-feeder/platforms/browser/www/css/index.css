@@ -1,0 +1,57 @@
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+    background: #fff5eb
+}
+
+.commands{
+  display: none;
+}
+
+.commands.visible{
+  display: block;
+}
+
+.commands .chat{
+  background: white;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.income{
+  color: green;
+}
+
+.outcome{
+  color: blue;
+}
+
+.app{
+  background: url('../img/cats.jpg');
+  height: 100%;
+  width: 100%;
+}
+
+.device-item{
+  background: white;
+  padding: 10px;
+  border: 1px #ff8100 solid;
+  border-radius: 5px;
+  margin: 3px 0;
+}
+
+.manage-buttons button,
+.action-button{
+  padding: 10px;
+  border-radius: 6px;
+  margin: 10px;
+  background: white;
+}
+
+html, body{
+  height: 100%;
+}
