@@ -42,49 +42,68 @@
             <div id="tabs">
                 <ul>
                   <li><a href="#list">Devices</a></li>
+                 
                   <li><a href="#settings">Settings</a></li>
-                  <li><a href="#commands">Console</a></li>
+                  <li><a href="#console">Console</a></li>
+                  
                 </ul>
                 <div id="list">
                     <div class='device-info' id="device-info">
                     </div>
                     <div class='device-list' id="devices">
                     </div>
-                    <button id='refresh' class='action-button'> Refresh </button>
-                    <button id='dis' class='action-button'> Disconnect </button>
+                    <div>
+                        <div id='refresh' class='action-button'> Refresh </div>
+                    </div>
+                    <div>
+                        <div id='dis' class='action-button'> Disconnect </div>
+                    </div>
                 </div>
+
                 <div id="settings">
+                    <div class='button full' id='refreshParams'>Update</div>
+                    <div class='settings-item'>
+                            <p>Time</p>
+                            <div class='spinner' id='timeSpinner'>In Progress...</div>
+                            <div id='currentTime'></div>
+                    </div>
                     <div class='settings-item'>
                         <p>Alarms</p>
+                        <div class='spinner' id='alarmListSpinner'>In Progress...</div>
                         <div id='alarms'></div>
                     </div>
                     <div class='settings-item'>
                             <p>Add Alarm</p>
-                            <div id='add-alarm'>
+                            <div class='spinner' id='addSpinner'>In Progress...</div>
+                            <div>
                                 <input type='text' />
-                                <button value='Add'/>
+                                <div class='button' id='addAlarm'>Add</div>
                             </div>
                     </div>
                     <div class='settings-item'>
                             <p>Set Time</p>
-                            <div id='set-time'>
+                            <div class='spinner' id='setTimeSpinner'>In Progress...</div>
+                            <div>
                                 <input type='text' />
-                                <button value='Set'/>
+                                <div class='button' id='setTime'>Set</div>
                             </div>
                     </div>
                     <div class='settings-item'>
                             <p>Feed</p>
-                                <button id='feed' class='action-button'> Feed </button>
-                            </div>
+                            <div id='feed' class='action-button full'> Feed </div>
                     </div>
                 </div>
-                <div class='commands' id="commands">
+                <div id="console">
                     <div class='chat' id='chat'></div>
+                    <input type='text' />
+                    <div class='button' id='send'>Send</div>
                     <div class='manage-buttons'>
-                      <button id='clear' class='action-button'> Clear </button>
+                      <div id='clear' class='action-button full'> Clear </div>
                     </div>
                 </div>
-              </div>           
+                
+              </div>  
+            </div>         
         </div>
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>

@@ -8,18 +8,21 @@ h1 {
     background: #fff5eb
 }
 
-.commands{
-  display: block;
-}
-
-.commands .chat{
+.chat{
   background: white;
   height: 400px;
+  border-radius: 5px;
+  border: 1px black solid;
   overflow-y: auto;
+  margin-bottom: 7px;
 }
 
 .income{
   color: green;
+}
+
+.spinner {
+  display: none;
 }
 
 .outcome{
@@ -40,14 +43,70 @@ h1 {
   margin: 3px 0;
 }
 
-.manage-buttons button,
+.button,
 .action-button{
   padding: 10px;
   border-radius: 6px;
-  margin: 10px;
+  margin: 0;
   background: white;
+  border: 1px black solid;
+  display: inline-block;
+}
+
+.button.full,
+.action-button.full{
+  width: 90%;
+}
+
+input {
+  width: 70%;
+  height: 30px;
 }
 
 html, body{
   height: 100%;
 }
+
+.alarm-item {
+  padding: 10px;
+  border: 1px #ff8100 solid;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.alarm-item:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.alarm-active {
+  border: 1px green solid;
+}
+
+.alarm-time,
+.alarm-delete {
+  display: inline-block;
+}
+
+.alarm-time {
+  margin-top: 5px;
+}
+
+.alarm-delete {
+  float: right;
+}
+
+.alarm-delete .button {
+  padding: 4px 10px;
+}
+
+.settings-item p {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.manage-buttons {
+  margin-top: 10px;
+}
+
