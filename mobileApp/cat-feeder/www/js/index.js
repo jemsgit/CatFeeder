@@ -23,6 +23,8 @@ var app = {
       connectSuccess: function(){
         app.modules.bluetooth.subscribeOnReply(function(data){
           app.modules.markup.addMessage('income', data)
+        }, function(e){
+            console.log(e);
         });
         app.modules.markup.showDevices(false);
         app.modules.markup.showDeviceInfo(app.activeDevice);
