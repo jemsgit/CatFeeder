@@ -1,2 +1,35 @@
 mobileApp/cat-feeder/node_modules
 mobileApp/node_modules
+
+# Mac
+mobileApp/cat-feeder/.DS_Store
+
+# iOS
+mobileApp/cat-feeder/platforms/ios/build/
+mobileApp/cat-feeder/platforms/ios/www/
+mobileApp/cat-feeder/platforms/ios/cordova/console.log
+*.xcuserdatad
+
+# android
+mobileApp/cat-feeder/platforms/android/assets/www
+mobileApp/cat-feeder/platforms/android/bin
+mobileApp/cat-feeder/platforms/android/gen
+mobileApp/cat-feeder/platforms/android/local.properties
+mobileApp/cat-feeder/platforms/android/ant-build
+mobileApp/cat-feeder/platforms/android/ant-gen
+mobileApp/cat-feeder/platforms/android/CordovaLib/ant-build
+mobileApp/cat-feeder/platforms/android/CordovaLib/ant-gen
+mobileApp/cat-feeder/platforms/android/CordovaLib/bin
+mobileApp/cat-feeder/platforms/android/CordovaLib/gen
+mobileApp/cat-feeder/platforms/android/CordovaLib/local.properties
+
+# wp8
+mobileApp/cat-feeder/platforms/wp8/bin
+mobileApp/cat-feeder/platforms/wp8/obj
+mobileApp/cat-feeder/platforms/wp8/www
+mobileApp/cat-feeder/platforms/wp8/.staging
+mobileApp/cat-feeder/platforms/wp8/*.suo
+mobileApp/cat-feeder/platforms/wp8/*.csproj.user
+
+# res
+mobileApp/cat-feeder/resources/signing
