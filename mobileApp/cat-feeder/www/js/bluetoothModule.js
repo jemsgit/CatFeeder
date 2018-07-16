@@ -6,6 +6,7 @@
     devices = [];
     connectedDevice = null;
     bleService = null;
+    message = '';
 
     // ASCII only
     function stringToBytes(string) {
@@ -38,6 +39,7 @@
             if (!macAddress_or_uuid || !success) {
                 return new Error('provide id and callbacks');
             }
+            ble.stopScan(function(){});
             ble.connect(macAddress_or_uuid, function (device) {
                 connectedDevice = device;
                 bleService = connectedDevice.characteristics.find(function (item) {
@@ -61,6 +63,9 @@
                 failure && failure(e);
             });
         },
+        wakeSignal: function(data, success, failure){
+            this.sendData(data, success, failure);
+        },      
         sendData: function (data, success, failure) {
             if (!success) {
                 return new Error('provide callbacks');
@@ -79,7 +84,13 @@
                 failure('No ble with writable and readable characteristic');
                 return;
             }
-            ble.startNotification(connectedDevice.id, bleService.service, bleService.characteristic, function (data) { success(bytesToString(data)) }, failure);
+            ble.startNotification(connectedDevice.id, bleService.service, bleService.characteristic, function(data){ 
+                message += bytesToString(data);
+                if(message.indexOf('\r\n\r\n') != -1){
+                    success(message.replace(/\r\n\r\n/g, ''));
+                    message = '';
+                }
+              }, failure);        
         }
     }
 })()

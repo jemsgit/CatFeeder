@@ -3,25 +3,58 @@
     app.modules = {}
   }
 
-  var devicesTempate = _.template('<div class="device-item" data-id="<%- id %>" data-name="<%- name %>"><%- name %></div>');
+  var devicesTempate = _.template('<div class="device-item" data-id="<%- id %>" data-name="<%- name %>"><%- name %><span class="loader"></span></div>');
   var incomeMessage = _.template('<div class="income"> >>> <%- message %></div>');
   var outcomeMessage = _.template('<div class="outcome"> <<< <%- message %></div>');
+  var alarmTempate = _.template('<% if(active) { %>' +
+    '<div class="alarm-item alarm-active" data-id="<%- id %>">' +
+    '<% } else { %>' +
+    '<div class="alarm-item" data-id="<%- id %>">' + 
+    '<% } %> <div class="alarm-time"><%- time %></div><div class="alarm-delete">' + 
+    '<% if(!active) { %>' +
+    '<div class="button" id="activateAlarm" data-id="<%- id %>"> Active </div>' +
+    '<% } %>' +
+    '<div class="button" id="deleteAlarm" data-id="<%- id %>"> X </div></div></div>');
+
+  function getInputValue(e){
+      return $(e.target).parent().find('input').val();
+  }
+
+  function setInputValue(e, val){
+    $(e.target).parent().find('input').val(val);
+  }
 
   app.modules.markup = {
     createUI: function() {
       $( "#tabs" ).tabs();
       this.enableTabs(false);
-      $('#dis').css('visibility','hidden');
+      this.setButtonVisibility('#dis', false);
     },
     enableTabs: function(flag) {
-      var command = flag ? 'enable' : 'disable';
-      $( "#tabs" ).tabs(command, [1, 2] );
+      var list = flag ? [] : [1, 2];
+      $( "#tabs" ).tabs('option', 'disabled', list);
+    },
+    showSpinner: function(id, flag){
+      $(id).css('display', flag ? 'inline-block' : 'none');
+    },
+    showCurrentDevice: function(device) {
+      this.showDevices(false);
+      this.showDeviceInfo(device);
+      this.enableTabs(true);
+      this.setButtonVisibility('#dis', true);
+      this.setButtonVisibility('#refresh', false);
     },
     showDeviceInfo: function(device){
       var $markup = device ? $('<div>' + device.name + '</div>') : '';
       $('#device-info').html($markup);
     },
+    setButtonVisibility: function(id, flag){
+      $(id).css('display', flag ? 'inline-block' : 'none');
+    },
     showDevices: function(list){
+      $('#device-info').html('');
+      this.setButtonVisibility('#dis', false);
+      this.setButtonVisibility('#refresh', true);
       var $markup = $('<div></div>')
       if(list){
         list.forEach(function(item){
@@ -30,6 +63,20 @@
         })
       }
       $('#devices').html($markup);
+    },
+    showTime: function(time){
+      var $markup = $('<div>' + time + '</div>')
+      $('#currentTime').html($markup);
+    },
+    showAlarms: function(alarms){
+      var $markup = $('<div></div>')
+      if(alarms){
+        alarms.forEach(function(item){
+          var template = alarmTempate({id: item.id, time: item.time, active: item.active})
+          $markup.append(template);
+        })
+      }
+      $('#alarms').html($markup);
     },
     addMessage: function(type, message){
       var mes = ''
@@ -43,33 +90,73 @@
         default:
           mes = outcomeMessage({message: message})
       }
-      $('.commands .chat').append(mes);
+      $('.chat').append(mes);
     },
     clearChat: function(){
-      $('.commands .chat').html('');
+      $('.chat').html('');
     },
     attachEvents: function(callbacks){
       var that = this;
       $('#devices').on('click', '.device-item', function(e){
           if(callbacks && callbacks.selectDevice){
-            callbacks.selectDevice(e)
+            var id = $(e.target).attr('data-id');
+            var name = $(e.target).attr('data-name');
+            callbacks.selectDevice(id, name)
           }
       })
-      $('.manage-buttons, .settings-buttons').on('click', 'button', function(e){
-          if(callbacks && callbacks.buttonClick){
-            callbacks.buttonClick(e);
-          }
-      })
+      $('#clear').on('click', function(e){
+        if(callbacks && callbacks.clearChart){
+          callbacks.clearChart(e);
+        }
+    })
       $('#refresh').on('click', function(e){
           if(callbacks && callbacks.refresh){
             callbacks.refresh(e)
           }
       })
+      $('#refreshParams').on('click', function(e){
+        if(callbacks && callbacks.refreshParams){
+          callbacks.refreshParams(e)
+        }
+    })
       $('#dis').on('click', function(e){
         if(callbacks && callbacks.disconnect){
           callbacks.refresh(e)
         }
     })
+      $('.settings-item').on('click', '#addAlarm', function(e){
+        if(callbacks && callbacks.addAlarm){
+          var val = getInputValue(e);
+          setInputValue(e, '')
+          callbacks.addAlarm(val)
+        }
+    })
+      $('.settings-item').on('click', '#setTime', function(e){
+        if(callbacks && callbacks.setTime){
+          var val = getInputValue(e)
+          setInputValue(e, '')
+          callbacks.setTime(val)
+        }
+    })
+    $('.settings-item').on('click', '#deleteAlarm', function(e){
+      if(callbacks && callbacks.deleteAlarm){
+        var id = $(e.target).attr('data-id')
+        callbacks.deleteAlarm(id)
+      }
+  })
+  $('.settings-item').on('click', '#activateAlarm', function(e){
+    if(callbacks && callbacks.activateAlarm){
+      var id = $(e.target).attr('data-id')
+      callbacks.activateAlarm(id)
+    }
+  })
+    $('#send').on('click', function(e){
+      if(callbacks && callbacks.consoleSend){
+        var val = getInputValue(e)
+        setInputValue(e, '')
+        callbacks.consoleSend(val)
+      }
+  })
     }
   }
 })()

@@ -65,7 +65,6 @@ void setInterruptionMode() {
 String getAlarms() {
     String result = "";
     at = clock.getAlarm1();
-    Serial.println(clock.dateFormat("d-m-Y H:i:s - l", at));
     String alarm = clock.dateFormat("H:i", at);
     int i = 0;
     while((i < alarmsCount) && (alarms[i] != "0")){
@@ -151,20 +150,20 @@ bool setTime(String daetTime) {
 }
 
 void setNextAlarm() {
-    Serial.println("set NExt");
+    //Serial.println("set NExt");
     int nextAlarmIndex = currentAlarmIndex+1;
     if(nextAlarmIndex > alarmsCount-1) {
         nextAlarmIndex = 0;
     }
     if(alarms[nextAlarmIndex] != "0") {
-      Serial.println("set NExt - 1");
+      //Serial.println("set NExt - 1");
           currentAlarmIndex = nextAlarmIndex;
           int time[2];
           parseTime(alarms[currentAlarmIndex], time, 2);
           // setAlarm1(Date or Day, Hour, Minute, Second, Mode, Armed = true)
           clock.setAlarm1(0, time[0], time[1], 0, DS3231_MATCH_H_M_S);
     } else {
-      Serial.println("set NExt - else");
+      //Serial.println("set NExt - else");
         currentAlarmIndex = -1;
         if(alarms[0] != "0") {
           setNextAlarm();
@@ -268,6 +267,11 @@ void updateSleepTime() {
   }  
 }
 
+void sendPackage(String data) {
+  mySerial.println(data + "\r\n\r\n");
+  Serial.println(data + "\r\n\r\n");
+}
+
 void loop()
 {
   if(isAlarm){
@@ -289,35 +293,34 @@ void loop()
        String params = data[1];
        if(command == "wake"){
           updateSleepTime();
+          sendPackage("woke");
        }
        if(command == "setTime"){
-          mySerial.println(setTime(params));
+          sendPackage(setTime(params) ? "true" : "false");
        } else if(command == "getTime"){
-          mySerial.println(getTime());
+          sendPackage(getTime());
        } else if(command == "addAlarm"){
-          mySerial.println(addAlarm(params));
+          sendPackage(addAlarm(params) ? "true" : "false");
        } else if(command == "deleteAlarm"){
-          mySerial.println(deleteAlarm(atoi(params.c_str())));
+          sendPackage(deleteAlarm(atoi(params.c_str())) ? "true" : "false");
        } else if(command == "getAlarms"){
-          mySerial.println(getAlarms());
+          sendPackage(getAlarms());
        } else if(command == "feed"){
-          mySerial.println(feed());
-       } else if(command = "setActiveAlarm"){
-          mySerial.println(setActiveAlarm(atoi(params.c_str())));
+          sendPackage(feed() ? "true" : "false");
+       } else if(command == "setActiveAlarm"){
+          sendPackage(setActiveAlarm(atoi(params.c_str())) ? "true" : "false");
        }
        Serial.println(command); //отправить в другой порт
      }
     if (Serial.available())
      {  
        message = Serial.readString();//прочитать из порта
-       mySerial.println(message); //отправить в другой порт
+       //mySerial.println(message); //отправить в другой порт - debug
      }
      if(getMinute() >= sleepStartMinute){
         UARTListen = false;
         sleepStartMinute = -1;
      }
-     Serial.println(getMinute()); 
-     Serial.println(sleepStartMinute); 
   } else {
     sleepNow();
   }
