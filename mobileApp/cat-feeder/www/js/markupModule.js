@@ -121,7 +121,7 @@
     })
       $('#dis').on('click', function(e){
         if(callbacks && callbacks.disconnect){
-          callbacks.refresh(e)
+          callbacks.disconnect(e)
         }
     })
     $('.settings-item')
