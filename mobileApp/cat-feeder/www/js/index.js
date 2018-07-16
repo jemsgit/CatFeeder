@@ -161,7 +161,7 @@ var app = {
       },
       disconnect: function(){
         app.modules.bluetooth.disconnectDevices(function(){
-          disconnectCallback();
+          app.eventCallbacks.disconnectCallback();
         });
       }
     },
