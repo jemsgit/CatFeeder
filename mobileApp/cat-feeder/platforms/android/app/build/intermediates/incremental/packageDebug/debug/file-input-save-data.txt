@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Jul 15 18:02:18 GMT+04:00 2018
+#Mon Jul 16 05:44:25 GMT+04:00 2018
 25.file=/Users/jem/Documents/projects/CatFeeder/mobileApp/cat-feeder/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_/AndroidManifest.xml
 25.base=/Users/jem/Documents/projects/CatFeeder/mobileApp/cat-feeder/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_
 22.set=ANDROID_RESOURCE

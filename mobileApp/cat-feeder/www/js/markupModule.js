@@ -3,14 +3,14 @@
     app.modules = {}
   }
 
-  var devicesTempate = _.template('<div class="device-item" data-id="<%- id %>" data-name="<%- name %>"><%- name %></div>');
+  var devicesTempate = _.template('<div class="device-item" data-id="<%- id %>" data-name="<%- name %>"><%- name %><span class="loader button-loader"></span></div>');
   var incomeMessage = _.template('<div class="income"> >>> <%- message %></div>');
   var outcomeMessage = _.template('<div class="outcome"> <<< <%- message %></div>');
   var alarmTempate = _.template('<% if(active) { %>' +
     '<div class="alarm-item alarm-active" data-id="<%- id %>">' +
     '<% } else { %>' +
     '<div class="alarm-item" data-id="<%- id %>">' + 
-    '<% } %> <div class="alarm-time"><%- time %></div><div class="alarm-delete">' + 
+    '<% } %> <div class="alarm-time"><%- time %></div><span class="loader"></span><div class="alarm-delete">' + 
     '<% if(!active) { %>' +
     '<div class="button" id="activateAlarm" data-id="<%- id %>"> Active </div>' +
     '<% } %>' +
@@ -45,7 +45,7 @@
       this.setButtonVisibility('#refresh', false);
     },
     showDeviceInfo: function(device){
-      var $markup = device ? $('<div>' + device.name + '</div>') : '';
+      var $markup = device ? $('<div>' + device.name + ' - connected </div>') : '';
       $('#device-info').html($markup);
     },
     setButtonVisibility: function(id, flag){
@@ -124,32 +124,37 @@
           callbacks.refresh(e)
         }
     })
-      $('.settings-item').on('click', '#addAlarm', function(e){
+    $('.settings-item')
+    .on('click', '#activateAlarm', function(e){
+      if(callbacks && callbacks.activateAlarm){
+        var id = $(e.target).attr('data-id')
+        callbacks.activateAlarm(id)
+      }
+    }).on('click', '#deleteAlarm', function(e){
+      if(callbacks && callbacks.deleteAlarm){
+        var id = $(e.target).attr('data-id')
+        callbacks.deleteAlarm(id)
+      }
+    })
+    .on('click', '#setTime', function(e){
+      if(callbacks && callbacks.setTime){
+        var val = getInputValue(e)
+        setInputValue(e, '')
+        callbacks.setTime(val)
+      }
+    })
+      .on('click', '#addAlarm', function(e){
         if(callbacks && callbacks.addAlarm){
           var val = getInputValue(e);
           setInputValue(e, '')
           callbacks.addAlarm(val)
         }
-    })
-      $('.settings-item').on('click', '#setTime', function(e){
-        if(callbacks && callbacks.setTime){
-          var val = getInputValue(e)
-          setInputValue(e, '')
-          callbacks.setTime(val)
-        }
-    })
-    $('.settings-item').on('click', '#deleteAlarm', function(e){
-      if(callbacks && callbacks.deleteAlarm){
-        var id = $(e.target).attr('data-id')
-        callbacks.deleteAlarm(id)
+    }).on('click', '#feed', function(e){
+      if(callbacks && callbacks.feed){
+        callbacks.feed();
       }
   })
-  $('.settings-item').on('click', '#activateAlarm', function(e){
-    if(callbacks && callbacks.activateAlarm){
-      var id = $(e.target).attr('data-id')
-      callbacks.activateAlarm(id)
-    }
-  })
+
     $('#send').on('click', function(e){
       if(callbacks && callbacks.consoleSend){
         var val = getInputValue(e)

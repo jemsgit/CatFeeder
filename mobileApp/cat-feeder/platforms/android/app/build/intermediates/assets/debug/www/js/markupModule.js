@@ -3,7 +3,7 @@
     app.modules = {}
   }
 
-  var devicesTempate = _.template('<div class="device-item" data-id="<%- id %>" data-name="<%- name %>"><%- name %></div>');
+  var devicesTempate = _.template('<div class="device-item" data-id="<%- id %>" data-name="<%- name %>"><%- name %><span class="loader"></span></div>');
   var incomeMessage = _.template('<div class="income"> >>> <%- message %></div>');
   var outcomeMessage = _.template('<div class="outcome"> <<< <%- message %></div>');
   var alarmTempate = _.template('<% if(active) { %>' +

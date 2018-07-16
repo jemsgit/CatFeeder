@@ -112,9 +112,9 @@ var app = {
       disconnectCallback: function(){
         app.modules.markup.clearChat();
         app.modules.markup.showDeviceInfo(false);
+        app.modules.markup.enableTabs(false);
         app.activeDevice = null;
         app.modules.bluetooth.getDeviceList(app.modules.markup.showDevices.bind(app.modules.markup));
-        app.modules.markup.enableTabs(false);
       },
       clearChart: function(e){
         app.modules.markup.clearChat();
@@ -166,9 +166,6 @@ var app = {
       }
     },
     // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
         this.modules.markup.createUI();
